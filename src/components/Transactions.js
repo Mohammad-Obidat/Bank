@@ -12,6 +12,7 @@ export class Transactions extends Component {
               id={t.id}
               vendor={t.vendor}
               category={t.category}
+              deleteTransaction={this.props.deleteTransaction}
             />
           );
         })}

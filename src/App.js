@@ -13,7 +13,7 @@ export class App extends Component {
     };
   }
 
-  componentDidMount = async () => {
+  getTransactions = async () => {
     let transactions = await axios.get(`http://localhost:5000`);
 
     this.setState({
@@ -28,6 +28,15 @@ export class App extends Component {
     });
   };
 
+  componentWillMount = async () => {
+    await this.getTransactions();
+  };
+
+  deleteTransaction = async (transactionId) => {
+    await axios.delete(`http://localhost:5000/transaction/${transactionId}`);
+    await this.getTransactions();
+  };
+
   render() {
     return (
       <Router>
@@ -38,7 +47,10 @@ export class App extends Component {
             exact
             path='/'
             render={() => (
-              <Transactions transactions={this.state.transactions} />
+              <Transactions
+                transactions={this.state.transactions}
+                deleteTransaction={this.deleteTransaction}
+              />
             )}
           />
 
