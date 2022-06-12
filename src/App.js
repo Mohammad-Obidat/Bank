@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Operations from './components/Operations';
+import Transactions from './components/Transactions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      transactions: [],
+    };
+  }
+
+  componentDidMount = async () => {
+    let transactions = await axios.get(`http://localhost:5000`);
+
+    this.setState({
+      transactions: transactions.data.map((t) => {
+        return {
+          id: t._id,
+          amount: t.amount,
+          vendor: t.vendor,
+          category: t.category,
+        };
+      }),
+    });
+  };
+
+  render() {
+    return (
+      <Router>
+        <>
+          <Navbar />
+          <hr />
+          <Route
+            exact
+            path='/'
+            render={() => (
+              <Transactions transactions={this.state.transactions} />
+            )}
+          />
+
+          <Route exact path='/operations' render={() => <Operations />} />
+        </>
+      </Router>
+    );
+  }
 }
 
 export default App;
