@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Breakdown from './components/Breakdown';
 import NavbarBank from './components/NavbarBank';
 import Operations from './components/Operations';
@@ -74,6 +76,18 @@ export class App extends Component {
             getTotalBalance={this.getTotalBalance}
           />
 
+          <ToastContainer
+            position='top-center'
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
+
           <div id='routeDiv'>
             <Route
               exact
@@ -99,7 +113,6 @@ export class App extends Component {
                 <Breakdown
                   categories={this.state.categories}
                   getCategories={this.getCategories}
-                  getTotalBalance={this.getTotalBalance}
                 />
               )}
             />

@@ -2,6 +2,7 @@ import { Button } from 'react-bootstrap';
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { InputGroup, FormControl } from 'react-bootstrap';
+import notify from './Toasts';
 
 export class Operations extends Component {
   constructor() {
@@ -16,14 +17,16 @@ export class Operations extends Component {
     this.transactionDetails[key] = value;
   };
 
-  addNewOperation = async () => {
-    await this.props.addOperation(this.transactionDetails);
+  addNewOperation = () => {
+    notify('Added successfully!');
+    this.props.addOperation(this.transactionDetails);
     this.props.history.replace('/');
   };
 
-  denay = async () => {
+  denay = () => {
+    notify('Added successfully!');
     this.transactionDetails.amount = -this.transactionDetails.amount;
-    await this.props.addOperation(this.transactionDetails);
+    this.props.addOperation(this.transactionDetails);
     this.props.history.replace('/');
   };
 

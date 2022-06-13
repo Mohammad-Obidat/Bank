@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import notify from './Toasts';
 
 export class Transaction extends Component {
   deleteTrans = () => {
+    notify('Deleted successfully!');
     this.props.deleteTransaction(this.props.id);
   };
 
