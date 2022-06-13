@@ -30,6 +30,7 @@ export class Operations extends Component {
   render() {
     return (
       <>
+        <h3 className='mb-3'>Enter your operation details here:</h3>
         <InputGroup className='mb-3'>
           <InputGroup.Text>$</InputGroup.Text>
           <FormControl

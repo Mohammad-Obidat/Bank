@@ -12,6 +12,7 @@ export class App extends Component {
     this.state = {
       transactions: [],
       categories: [],
+      totalBalance: 0,
     };
   }
 
@@ -30,10 +31,6 @@ export class App extends Component {
     });
   };
 
-  componentDidMount = () => {
-    this.getTransactions();
-  };
-
   getCategories = async () => {
     let categories = await axios.get(`http://localhost:5000/breakdown`);
 
@@ -45,6 +42,17 @@ export class App extends Component {
         };
       }),
     });
+  };
+
+  getTotalBalance = async () => {
+    let totalBalance = await axios.get(`http://localhost:5000/totalBalance`);
+    this.setState({
+      totalBalance: totalBalance.data.map((t) => t.totalBalance)[0],
+    });
+  };
+
+  componentDidMount = () => {
+    this.getTransactions();
   };
 
   deleteTransaction = async (transactionId) => {
@@ -61,7 +69,10 @@ export class App extends Component {
     return (
       <Router>
         <>
-          <NavbarBank />
+          <NavbarBank
+            totalBalance={this.state.totalBalance}
+            getTotalBalance={this.getTotalBalance}
+          />
 
           <div id='routeDiv'>
             <Route
@@ -88,6 +99,7 @@ export class App extends Component {
                 <Breakdown
                   categories={this.state.categories}
                   getCategories={this.getCategories}
+                  getTotalBalance={this.getTotalBalance}
                 />
               )}
             />

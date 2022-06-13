@@ -4,7 +4,7 @@ const saveTransaction = require('../config/db.js');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  let transactions = await Transaction.find({});
+  let transactions = await Transaction.find({}).sort({ date: -1 });
   try {
     res.send(transactions);
   } catch (error) {
@@ -15,6 +15,17 @@ router.get('/', async (req, res) => {
 router.get('/breakdown', async (req, res) => {
   let transactions = await Transaction.aggregate([
     { $group: { _id: '$category', amount: { $sum: '$amount' } } },
+  ]);
+  try {
+    res.send(transactions);
+  } catch (error) {
+    res.sendStatus(400);
+  }
+});
+
+router.get('/totalBalance', async (req, res) => {
+  let transactions = await Transaction.aggregate([
+    { $group: { _id: null, totalBalance: { $sum: '$amount' } } },
   ]);
   try {
     res.send(transactions);

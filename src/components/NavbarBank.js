@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 
 export class NavbarBank extends Component {
+  componentDidUpdate = () => {
+    this.props.getTotalBalance();
+  };
+
   render() {
     return (
       <>
@@ -22,11 +26,12 @@ export class NavbarBank extends Component {
                 <Link className='reactLink' to='/operation'>
                   <Nav.Link href='/operation'>Operations</Nav.Link>
                 </Link>
-              </Nav>
-              <Nav>
                 <Link className='reactLink' to='/breakdown'>
                   <Nav.Link href='/breakdown'>Breakdown</Nav.Link>
                 </Link>
+              </Nav>
+              <Nav>
+                <Nav.Link>Balance ${this.props.totalBalance}</Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>
