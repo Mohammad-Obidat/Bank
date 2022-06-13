@@ -12,6 +12,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/breakdown', async (req, res) => {
+  let transactions = await Transaction.aggregate([
+    { $group: { _id: '$category', amount: { $sum: '$amount' } } },
+  ]);
+  try {
+    res.send(transactions);
+  } catch (error) {
+    res.sendStatus(400);
+  }
+});
+
 router.post('/operation', async (req, res) => {
   let operation = req.body;
   try {

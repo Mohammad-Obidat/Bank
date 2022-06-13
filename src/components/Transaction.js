@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
+import { Modal, Button } from 'react-bootstrap';
 
 export class Transaction extends Component {
-  deleteTrans = async () => {
-    await this.props.deleteTransaction(this.props.id);
+  deleteTrans = () => {
+    this.props.deleteTransaction(this.props.id);
   };
 
   render() {
     let props = this.props;
     return (
-      <div id={props.id}>
-        <span>{props.vendor}</span>
-        <span>{props.category}</span>
-        <button type='button' onClick={this.deleteTrans}>
-          Delete
-        </button>
-      </div>
+      <>
+        <Modal.Dialog>
+          <Modal.Header>
+            <Modal.Title>{props.vendor}</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <p>Category - {props.category}</p>
+            <p>Amount: ${props.amount}</p>
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button variant='danger' type='button' onClick={this.deleteTrans}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        </Modal.Dialog>
+      </>
     );
   }
 }

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Breakdown from './components/Breakdown';
+import NavbarBank from './components/NavbarBank';
 import Operations from './components/Operations';
 import Transactions from './components/Transactions';
 
@@ -10,6 +11,7 @@ export class App extends Component {
     super();
     this.state = {
       transactions: [],
+      categories: [],
     };
   }
 
@@ -28,33 +30,68 @@ export class App extends Component {
     });
   };
 
-  componentWillMount = async () => {
-    await this.getTransactions();
+  componentDidMount = () => {
+    this.getTransactions();
+  };
+
+  getCategories = async () => {
+    let categories = await axios.get(`http://localhost:5000/breakdown`);
+
+    this.setState({
+      categories: categories.data.map((t) => {
+        return {
+          category: t._id,
+          totalAmount: t.amount,
+        };
+      }),
+    });
   };
 
   deleteTransaction = async (transactionId) => {
     await axios.delete(`http://localhost:5000/transaction/${transactionId}`);
-    await this.getTransactions();
+    this.getTransactions();
+  };
+
+  addOperation = async (transactionDetails) => {
+    await axios.post(`http://localhost:5000/operation`, transactionDetails);
+    this.getTransactions();
   };
 
   render() {
     return (
       <Router>
         <>
-          <Navbar />
-          <hr />
-          <Route
-            exact
-            path='/'
-            render={() => (
-              <Transactions
-                transactions={this.state.transactions}
-                deleteTransaction={this.deleteTransaction}
-              />
-            )}
-          />
+          <NavbarBank />
 
-          <Route exact path='/operations' render={() => <Operations />} />
+          <div id='routeDiv'>
+            <Route
+              exact
+              path='/'
+              render={() => (
+                <Transactions
+                  transactions={this.state.transactions}
+                  deleteTransaction={this.deleteTransaction}
+                />
+              )}
+            />
+
+            <Route
+              exact
+              path='/operation'
+              render={() => <Operations addOperation={this.addOperation} />}
+            />
+
+            <Route
+              exact
+              path='/breakdown'
+              render={() => (
+                <Breakdown
+                  categories={this.state.categories}
+                  getCategories={this.getCategories}
+                />
+              )}
+            />
+          </div>
         </>
       </Router>
     );
