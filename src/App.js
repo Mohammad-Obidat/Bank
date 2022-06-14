@@ -49,7 +49,7 @@ export class App extends Component {
   getTotalBalance = async () => {
     let totalBalance = await axios.get(`http://localhost:5000/totalBalance`);
     this.setState({
-      totalBalance: totalBalance.data.map((t) => t.totalBalance)[0],
+      totalBalance: totalBalance.data[0].totalBalance,
     });
   };
 
