@@ -13,22 +13,23 @@ export class NavbarBank extends Component {
       <>
         <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
           <Container>
-            <Link className='reactLink' to='/'>
-              <Navbar.Brand href='/'>Bank</Navbar.Brand>
-            </Link>
+            <Nav.Link as={Link} to='/'>
+              Bank
+            </Nav.Link>
             <Navbar.Toggle aria-controls='responsive-navbar-nav' />
             <Navbar.Collapse id='responsive-navbar-nav'>
               <Nav className='me-auto'>
-                <Link className='reactLink' to='/'>
-                  <Nav.Link href='/'>Transactions</Nav.Link>
-                </Link>
+                <Nav.Link as={Link} to='/'>
+                  Transactions
+                </Nav.Link>
 
-                <Link className='reactLink' to='/operation'>
-                  <Nav.Link href='/operation'>Operations</Nav.Link>
-                </Link>
-                <Link className='reactLink' to='/breakdown'>
-                  <Nav.Link href='/breakdown'>Breakdown</Nav.Link>
-                </Link>
+                <Nav.Link as={Link} to='/operation'>
+                  Operations
+                </Nav.Link>
+
+                <Nav.Link as={Link} to='/breakdown'>
+                  Breakdown
+                </Nav.Link>
               </Nav>
               <Nav>
                 <Nav.Link>Balance ${this.props.totalBalance}</Nav.Link>
